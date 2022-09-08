@@ -21,8 +21,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-
+import androidx.lifecycle.MutableLiveData;
 
 
 import com.facebook.react.ReactActivity;
@@ -42,6 +41,8 @@ public class MainActivity extends ReactActivity implements SensorEventListener {
   private SensorManager sensorManager;
   private Intent intent;
   private static SharedPreferences sharedPreferences;
+  private MutableLiveData<String> stepCount;
+
 
 
 
@@ -58,6 +59,7 @@ public class MainActivity extends ReactActivity implements SensorEventListener {
 
     sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     textViewSteps.setText(String.format("%d", sharedPreferences.getLong("steps", 0)));
+    StepCountModule.updateActivity(this);
 
 
     startService(intent);
@@ -98,6 +100,13 @@ public class MainActivity extends ReactActivity implements SensorEventListener {
     }
   }
 
+  public MutableLiveData<String> getStepCount() {
+    if (stepCount == null) {
+      stepCount = new MutableLiveData<String>();
+    }
+    return stepCount;
+  }
+
   /**
    * Returns the instance of the {@link ReactActivityDelegate}. There the RootView is created and
    * you can specify the renderer you wish to use - the new renderer (Fabric) or the old renderer
@@ -131,7 +140,7 @@ public class MainActivity extends ReactActivity implements SensorEventListener {
       steps++;
       textViewSteps.setText(""+steps);
       intent.putExtra("steps", steps);
-
+      stepCount.setValue(String.valueOf(steps));
       startService(intent);
     }
 
@@ -142,10 +151,16 @@ public class MainActivity extends ReactActivity implements SensorEventListener {
 
   }
 
+
+
+
   public static class MainActivityDelegate extends ReactActivityDelegate {
     public MainActivityDelegate(ReactActivity activity, String mainComponentName) {
       super(activity, mainComponentName);
     }
 
   }
+
+
 }
+
