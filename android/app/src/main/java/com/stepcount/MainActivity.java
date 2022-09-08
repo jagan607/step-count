@@ -51,6 +51,8 @@ public class MainActivity extends ReactActivity implements SensorEventListener {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     textViewSteps = findViewById(R.id.textViewSteps);
+    stepCount = new MutableLiveData<String>();
+
 
     sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
