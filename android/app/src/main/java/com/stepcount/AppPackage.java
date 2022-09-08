@@ -16,7 +16,7 @@ public class AppPackage implements ReactPackage {
 
     @Override
     public List<ViewManager> createViewManagers(@NonNull ReactApplicationContext reactContext) {
-        return StepCountModule(reactContext);
+        return Collections.emptyList();
     }
 
     @Override
